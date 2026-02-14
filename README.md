@@ -336,23 +336,6 @@ vercel --prod  # Frontend
 - 📋 Multi-language support
 - 📋 Enterprise SSO integration
 
-## Cost Estimation Overview
-
-### Development Phase
-- **MVP Development**: 4-6 weeks
-- **Team**: 2-3 developers
-- **Estimated Cost**: $15,000 - $25,000
-
-### Monthly Operating Costs (Estimated)
-
-| Service | Cost (Low Traffic) | Cost (High Traffic) |
-|---------|-------------------|---------------------|
-| Frontend Hosting (Vercel) | $0 - $20 | $20 - $100 |
-| Backend Hosting (Render/AWS) | $7 - $25 | $50 - $200 |
-| Database (MongoDB Atlas) | $0 - $25 | $57 - $200 |
-| AI API (OpenAI/Claude) | $50 - $200 | $500 - $2000 |
-| Redis Cache | $0 - $10 | $15 - $50 |
-| **Total** | **$57 - $280** | **$642 - $2550** |
 
 ### Cost Optimization Strategies
 - Use Ollama with open-source LLMs (reduces AI costs by 80-90%)
