@@ -795,6 +795,7 @@ def compare_versions(
     )
 ```
 
+<<<<<<< HEAD
 
 ## 4. Database Design
 
@@ -1320,3 +1321,247 @@ async def get_current_user(token: str = Depends(security)):
         raise HTTPException(status_code=401)
 ```
 
+=======
+>>>>>>> 26a9843 (created requirements.md and design.md from kiro)
+
+## 7. Scalability Considerations
+
+### 7.1 Horizontal Scaling
+
+**Stateless Backend Design**:
+- No session data stored in application memory
+- All state stored in database or Redis
+- Any backend instance can handle any request
+- Easy to add/remove instances
+
+**Load Balancing Strategy**:
+- Round-robin distribution for even load
+- Health checks to remove unhealthy instances
+- Session affinity not required (stateless design)
+
+### 7.2 Caching Strategies
+
+**Multi-Level Caching**:
+
+```python
+# Level 1: In-memory cache (per instance)
+from functools import lru_cache
+
+@lru_cache(maxsize=1000)
+def get_persona_prompt(persona: str) -> str:
+    return PERSONA_PROMPTS[persona]
+
+# Level 2: Redis cache (shared across instances)
+import redis
+import json
+
+redis_client = redis.Redis(host='localhost', port=6379, db=0)
+
+async def get_cached_analysis(content_hash: str):
+    cached = redis_client.get(f"analysis:{content_hash}")
+    if cached:
+        return json.loads(cached)
+    return None
+
+async def cache_analysis(content_hash: str, analysis: dict):
+    redis_client.setex(
+        f"analysis:{content_hash}",
+        3600,  # 1 hour TTL
+        json.dumps(analysis)
+    )
+```
+
+**Cache Invalidation**:
+- Time-based expiration (TTL)
+- Content-based invalidation (hash changes)
+- Manual invalidation for updated prompts
+
+### 7.3 Token Optimization
+
+**Strategies to Reduce LLM API Costs**:
+
+1. **Prompt Compression**:
+```python
+def compress_prompt(content: str, max_length: int = 2000) -> str:
+    if len(content) <= max_length:
+        return content
+    # Intelligent truncation preserving key information
+    return content[:max_length] + "..."
+```
+
+2. **Response Caching**:
+```python
+def get_content_hash(content: str, platform: str) -> str:
+    return hashlib.sha256(f"{content}:{platform}".encode()).hexdigest()
+
+# Check cache before calling LLM
+content_hash = get_content_hash(content, platform)
+cached_result = await get_cached_analysis(content_hash)
+if cached_result:
+    return cached_result
+```
+
+3. **Batch Processing**:
+```python
+# Process multiple analyses in single API call when possible
+async def batch_analyze(contents: List[str]):
+    combined_prompt = "\n\n---\n\n".join(
+        f"Content {i+1}: {c}" for i, c in enumerate(contents)
+    )
+    # Single API call for multiple contents
+    response = await llm_client.generate(combined_prompt)
+    return parse_batch_response(response)
+```
+
+4. **Model Selection**:
+```python
+def select_model(persona: str, content_length: int) -> str:
+    # Use cheaper models for simpler tasks
+    if persona in ["genz", "creativity"] and content_length < 500:
+        return "gpt-3.5-turbo"  # Cheaper
+    return "gpt-4-turbo-preview"  # More capable
+```
+
+### 7.4 Parallel AI Execution
+
+**Async/Await Pattern**:
+```python
+import asyncio
+
+async def analyze_all_personas(content: str):
+    # Create coroutines for all personas
+    tasks = [
+        analyze_legal(content),
+        analyze_genz(content),
+        analyze_ethics(content),
+        analyze_ideological(content),
+        analyze_brand(content),
+        analyze_creativity(content)
+    ]
+    
+    # Execute all in parallel
+    results = await asyncio.gather(*tasks)
+    
+    return results
+```
+
+**Benefits**:
+- 6x faster than sequential execution
+- Better resource utilization
+- Reduced user wait time
+- Improved throughput
+
+### 7.5 Database Optimization
+
+**Indexing Strategy**:
+```javascript
+// MongoDB indexes
+db.content_analyses.createIndex({ user_id: 1, created_at: -1 })
+db.content_analyses.createIndex({ expires_at: 1 }, { expireAfterSeconds: 0 })
+db.users.createIndex({ email: 1 }, { unique: true })
+```
+
+**Query Optimization**:
+```python
+# Bad: Fetch all fields
+analyses = db.content_analyses.find({"user_id": user_id})
+
+# Good: Project only needed fields
+analyses = db.content_analyses.find(
+    {"user_id": user_id},
+    {"risk_score": 1, "created_at": 1, "status": 1}
+)
+```
+
+**Connection Pooling**:
+```python
+from motor.motor_asyncio import AsyncIOMotorClient
+
+# Create connection pool
+client = AsyncIOMotorClient(
+    settings.DATABASE_URL,
+    maxPoolSize=50,
+    minPoolSize=10
+)
+```
+
+## 8. Design Decisions & Trade-offs
+
+### 8.1 Why LLM API vs Open-Source Model
+
+**Decision**: Use OpenAI/Anthropic API for MVP, with Ollama as optional alternative
+
+**Rationale**:
+- **Quality**: Commercial LLMs provide superior output quality
+- **Reliability**: Managed service with high uptime
+- **Speed**: Faster inference than self-hosted models
+- **Simplicity**: No infrastructure management required
+- **Flexibility**: Easy to switch models or providers
+
+**Trade-offs**:
+- **Cost**: Pay per token (can be expensive at scale)
+- **Privacy**: Data sent to third-party service
+- **Control**: Limited customization options
+- **Dependency**: Reliant on external service availability
+
+**Mitigation**:
+- Implement Ollama fallback for cost-sensitive users
+- Cache aggressively to reduce API calls
+- Monitor costs and optimize prompts
+- Consider fine-tuned models for production
+
+### 8.2 Why Parallel Persona Evaluation
+
+**Decision**: Execute all six personas concurrently using async/await
+
+**Rationale**:
+- **Performance**: 6x faster than sequential (5s vs 30s)
+- **User Experience**: Acceptable wait time for users
+- **Resource Efficiency**: Better utilization of I/O-bound operations
+- **Scalability**: Handles more concurrent users
+
+**Trade-offs**:
+- **Complexity**: More complex error handling
+- **Cost**: Six simultaneous API calls (but faster overall)
+- **Resource Usage**: Higher peak memory/CPU usage
+
+**Mitigation**:
+- Implement robust error handling for individual persona failures
+- Use connection pooling to manage concurrent requests
+- Monitor resource usage and scale horizontally if needed
+
+### 8.3 Why Layered Architecture
+
+**Decision**: Separate presentation, application, AI processing, and data layers
+
+**Rationale**:
+- **Separation of Concerns**: Each layer has clear responsibility
+- **Maintainability**: Easier to update individual components
+- **Testability**: Can test layers independently
+- **Scalability**: Can scale layers independently
+- **Team Collaboration**: Different developers can work on different layers
+
+**Trade-offs**:
+- **Complexity**: More files and abstractions
+- **Performance**: Additional layer overhead (minimal)
+- **Learning Curve**: New developers need to understand architecture
+
+**Mitigation**:
+- Comprehensive documentation
+- Clear naming conventions
+- Consistent patterns across layers
+- Example code and templates
+
+---
+
+## Conclusion
+
+This design document provides a comprehensive technical blueprint for the CANCEL AI platform. The architecture prioritizes:
+
+1. **User Experience**: Fast response times and intuitive interfaces
+2. **Scalability**: Horizontal scaling and efficient resource usage
+3. **Maintainability**: Clean code structure and comprehensive documentation
+4. **Cost Efficiency**: Optimized API usage and caching strategies
+5. **Security**: Industry-standard authentication and data protection
+
+The modular design allows for iterative development, starting with a functional MVP and progressively adding features based on user feedback and business requirements.

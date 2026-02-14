@@ -2,11 +2,19 @@
 
 ## 1. Introduction
 
+<<<<<<< HEAD
 ### 1.1 System Description
 CANCEL AI is an AI-powered web application that helps content creators evaluate their content before publishing by simulating multiple AI personas (Legal Advisor, Gen-Z Critic, Ethics Guardian, Ideological Analyst, Brand Protector, and Creativity Coach). The system provides comprehensive risk assessment, audience emotion mapping, persona-based feedback, and content improvement suggestions through safer and bolder rewrites.
 
 ### 1.2 Document Objective
 This document defines the functional and non-functional requirements for the CANCEL AI platform. It serves as a reference for development, testing, and deployment, ensuring all stakeholders understand the system's capabilities, constraints, and expected behavior.
+=======
+### 1.1 Project Description
+CANCEL AI is an AI-powered web application that helps content creators evaluate their content before publishing by simulating multiple human perspectives. The system analyzes content through six distinct AI personas (Legal Advisor, Gen-Z Critic, Ethics Guardian, Ideological Analyst, Brand Protector, and Creativity Coach) to provide comprehensive risk assessment, audience emotion mapping, and content improvement suggestions.
+
+### 1.2 Document Objective
+This document outlines the functional and non-functional requirements for the CANCEL AI platform. It serves as a technical specification for development, testing, and deployment phases, ensuring all stakeholders have a clear understanding of system capabilities and constraints
+>>>>>>> 26a9843 (created requirements.md and design.md from kiro)
 
 ## 2. Functional Requirements
 
@@ -119,6 +127,7 @@ This document defines the functional and non-functional requirements for the CAN
 4. System shall highlight improvements or new concerns
 5. System shall maintain version history for tracking changes
 
+<<<<<<< HEAD
 ## Non-Functional Requirements
 
 ### NFR1: Usability
@@ -156,6 +165,63 @@ This document defines the functional and non-functional requirements for the CAN
 - System must work on desktop and mobile devices
 - API must follow RESTful conventions
 - System must support future integration with third-party platforms
+=======
+## 3. Non-Functional Requirements
+
+### 3.1 Performance
+1. Content analysis response time shall be under 5 seconds for text content
+2. Content analysis response time shall be under 10 seconds for image content
+3. Page load time shall be under 2 seconds on standard broadband connection
+4. API response time shall be under 500ms (excluding LLM processing)
+5. Rewrite generation shall complete within 5 seconds
+6. Chat responses shall be delivered within 3 seconds
+
+### 3.2 Scalability
+1. System shall support minimum 100 concurrent users during MVP phase
+2. System shall handle 1,000 content analyses per hour
+3. Database shall efficiently manage 100,000+ content records
+4. Architecture shall support horizontal scaling for increased load
+5. System shall implement caching mechanisms to reduce redundant processing
+
+### 3.3 Security
+1. All API communications shall use HTTPS/TLS encryption
+2. API keys and secrets shall be stored in environment variables, not hardcoded
+3. User passwords shall be hashed using bcrypt with appropriate cost factor
+4. System shall implement rate limiting to prevent abuse (10 requests/minute for free tier)
+5. User data shall be encrypted at rest in database
+6. System shall validate and sanitize all user inputs to prevent injection attacks
+7. JWT tokens shall expire after 24 hours and require refresh
+
+### 3.4 Reliability
+1. System uptime shall be 99.5% or higher
+2. System shall implement graceful error handling and user-friendly error messages
+3. System shall have automated backup mechanisms for database (daily backups)
+4. System shall log errors and exceptions for debugging and monitoring
+5. System shall implement retry logic for failed API calls to LLM services
+
+### 3.5 Usability
+1. User interface shall be intuitive and require no technical training
+2. System shall provide helpful tooltips and onboarding guidance
+3. System shall be responsive and work on desktop, tablet, and mobile devices
+4. System shall support modern browsers (Chrome, Firefox, Safari, Edge)
+5. Error messages shall be clear, actionable, and non-technical
+6. System shall provide visual feedback for all user actions (loading states, confirmations)
+
+### 3.6 Maintainability
+1. Code shall follow established style guides (PEP 8 for Python, ESLint for JavaScript)
+2. System shall have comprehensive documentation for setup and deployment
+3. Code shall be modular and follow separation of concerns principles
+4. System shall achieve minimum 70% test coverage
+5. System shall use version control (Git) with clear commit messages
+6. System shall have clear API documentation (OpenAPI/Swagger)
+
+### 3.7 Cost Efficiency
+1. System shall optimize LLM API token usage to minimize costs
+2. System shall implement caching for repeated content analyses
+3. System shall provide option to use open-source LLMs via Ollama for cost reduction
+4. System shall monitor and alert on API usage approaching budget limits
+5. System shall batch API requests where possible to reduce overhead
+>>>>>>> 26a9843 (created requirements.md and design.md from kiro)
 
 ## User Stories
 
