@@ -1321,9 +1321,12 @@ async def get_current_user(token: str = Depends(security)):
         raise HTTPException(status_code=401)
 ```
 
+<<<<<<< HEAD
 =======
 >>>>>>> 26a9843 (created requirements.md and design.md from kiro)
 
+=======
+>>>>>>> 92c937b (save local changes before pull)
 ## 7. Scalability Considerations
 
 ### 7.1 Horizontal Scaling
