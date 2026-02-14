@@ -425,6 +425,27 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - ✅ Private use
 - ⚠️ Liability and warranty limitations apply
 
+<<<<<<< HEAD
+=======
+## Contact Information
+
+### Project Maintainers
+- **Project Lead**: [Your Name]
+- **Email**: [your.email@example.com]
+- **GitHub**: [@yourusername](https://github.com/yourusername)
+
+### Community
+- **Discord**: [Join our community](https://discord.gg/yourserver)
+- **Twitter**: [@CancelAI](https://twitter.com/cancelai)
+- **Website**: [www.cancelai.com](https://www.cancelai.com)
+
+### Support
+- **Documentation**: [docs.cancelai.com](https://docs.cancelai.com)
+- **Issues**: [GitHub Issues](https://github.com/yourusername/cancel-ai/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/cancel-ai/discussions)
+
+---
+>>>>>>> e641d52 (cretaed requirements.md and design.md from kiro)
 
 <div align="center">
 
