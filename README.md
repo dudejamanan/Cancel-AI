@@ -413,9 +413,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Contact Information
 
 ### Project Maintainers
-- **Project Lead**: [Your Name]
-- **Email**: [your.email@example.com]
-- **GitHub**: [@yourusername](https://github.com/yourusername)
+- **Project Lead**: [Manan Dudeja]
+- **Email**: [manan2006dudeja@gmail.com]
+- **GitHub**: [@dudejamanan](https://github.com/dudejamanan)
 
 ### Community
 - **Discord**: [Join our community](https://discord.gg/yourserver)
@@ -434,6 +434,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Built with ❤️ by creators, for creators**
 
-[⭐ Star us on GitHub](https://github.com/yourusername/cancel-ai) | [🐛 Report Bug](https://github.com/yourusername/cancel-ai/issues) | [💡 Request Feature](https://github.com/yourusername/cancel-ai/issues)
+[⭐ Star us on GitHub](https://github.com/dudejamanan/Cancel-AI) | [🐛 Report Bug](https://github.com/dudejamanan/cancel-AI/issues) | [💡 Request Feature](https://github.com/dudejamanan/Cancel-AI/issues)
 
 </div>
